@@ -23,4 +23,90 @@ $(document).ready(function(){
         });
         } // End if
     });
+    $('#consultation').validate({
+        rules: {
+            name: {
+                required: true,
+                minlength: 2
+            },
+            phone: "required",
+            email: {
+                required: true,
+                email: true
+            }
+        },
+        messages: {
+            name: {
+              required: "Пожалуйста, введите свое имя",
+              minlength: jQuery.validator.format("Введите {0} символа!")
+            },
+            phone: "Пожалуйста, введите cвой номер телефона",
+            email: {
+              required: "Пожалуйста, введите свою почту",
+              email: "Неправильно введен адрес почты"
+            }
+          }
     });
+    $('#questions').validate({
+        rules: {
+            name: {
+                required: true,
+                minlength: 2
+            },
+            phone: "required",
+            email: {
+                required: true,
+                email: true
+            },
+            textarea: {
+                required: true,
+                minlength: 30
+            }
+        },
+        messages: {
+            name: {
+              required: "Пожалуйста, введите свое имя",
+              minlength: jQuery.validator.format("Введите {0} символа!")
+            },
+            phone: "Пожалуйста, введите cвой номер телефона",
+            email: {
+              required: "Пожалуйста, введите свою почту",
+              email: "Неправильно введен адрес почты"
+            },
+            textarea: {
+                required: "Пожалуйста, заполните это поле",
+                minlength: jQuery.validator.format("Введите минимум {0} символов!")
+            }
+          }
+    });
+    $(window).scroll(function () {
+        if($(this).scrollTop() > 1100) {
+          $('.pageup').fadeIn('slow');
+        } else {
+          $('.pageup').fadeOut('slow');
+        }
+      });
+      $('form').submit(function(e) {
+        e.preventDefault();
+  
+        if(!$(this).valid()) {
+          return;
+        }
+  
+        $.ajax({
+          type: "POST",
+          url: "mailer/smart.php",
+          data: $(this).serialize()
+        }).done(function() {
+          $(this).find("input").val("");
+          // $('#consultation, #order').fadeOut();
+          $('.overlay').fadeIn('slow');
+          
+          $('form').trigger('reset');
+        });
+        return false;
+      });
+      $('.modal__close').on('click', function() {
+        $('.overlay').fadeOut('slow');
+    });
+});
