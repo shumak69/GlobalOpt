@@ -109,4 +109,46 @@ $(document).ready(function(){
       $('.modal__close').on('click', function() {
         $('.overlay').fadeOut('slow');
     });
+    const slider = document.querySelectorAll('.review__item'),
+    rightArrow = document.querySelector('.right-arrow'),
+    leftArrow = document.querySelector('.left-arrow'),
+    lastSlide = slider.length;
+    let currentSlide = 1;
+    rightArrow.style.userSelect = 'none';
+    leftArrow.style.userSelect = 'none';
+    function nextSlide() {
+      if(currentSlide == lastSlide - 1) {
+        currentSlide = 0;
+      } else {
+        currentSlide++;
+      }
+      toggleSlider();
+    }
+    function previousSlide () {
+      if(currentSlide == 0) {
+        currentSlide = lastSlide - 1;
+      } else {
+        currentSlide--;
+      }
+      toggleSlider();
+    }
+    function toggleSlider() {
+      slider.forEach(item => {
+        item.classList.remove('active');
+      });
+      slider.forEach((item, i) => {
+        if(i == currentSlide) {
+          item.classList.add('active');
+        }
+      });
+    }
+    toggleSlider();
+    rightArrow.addEventListener('click', (e) => {
+      e.preventDefault();
+      nextSlide();
+    });
+    leftArrow.addEventListener('click', e => {
+      e.preventDefault();
+      previousSlide();
+    });
 });
